@@ -19,21 +19,29 @@ public class Customer {
   }
 
   public String statement() {
-    double totalInvoiceAmount = 0;
-    int frequentRenterPoints = 0;
-    Iterator<Rental> rentals = _rentals.stream().iterator();
     StringBuilder invoiceStatement = new StringBuilder(invoiceHeader());
 
+    generateItemisedInvoice(invoiceStatement);
+    addFooterLines(totalInvoiceAmount(), frequentRenterPoints(), invoiceStatement);
+
+    return invoiceStatement.toString();
+  }
+
+  private int frequentRenterPoints() {
+    return _rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
+  }
+
+  private double totalInvoiceAmount() {
+    return _rentals.stream().mapToDouble(Rental::charge).sum();
+  }
+
+  private void generateItemisedInvoice(StringBuilder invoiceStatement) {
+    Iterator<Rental> rentals = _rentals.stream().iterator();
     while (rentals.hasNext()) {
       Rental rental = rentals.next();
       double rentalChargeForThisRental = rental.charge();
-      frequentRenterPoints += rental.getFrequentRenterPoints();
       invoiceStatement.append(generateInvoiceLineForRental(rental, rentalChargeForThisRental));
-      totalInvoiceAmount += rentalChargeForThisRental;
     }
-
-    addFooterLines(totalInvoiceAmount, frequentRenterPoints, invoiceStatement);
-    return invoiceStatement.toString();
   }
 
   private String invoiceHeader() {

@@ -2,6 +2,7 @@ public class Movie {
   public static final int CHILDRENS = 2;
   public static final int REGULAR = 0;
   public static final int NEW_RELEASE = 1;
+
   public static final int REGULAR_MOVIE_BASE_RENTAL = 2;
   public static final double CHILDRENS_MOVIE_BASE_CHARGE = 1.5;
   public static final int NEW_RELEASE_FLAT_CHARGE = 3;
