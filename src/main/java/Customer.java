@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Customer {
@@ -14,17 +13,17 @@ public class Customer {
     _rentals.add(rental);
   }
 
-  public String getName() {
-    return _name;
+  public String statement() {
+    return new TextInvoice(getName(), generateItemisedCharges(), totalInvoiceAmount(), frequentRenterPoints())
+        .generate();
   }
 
-  public String statement() {
-    StringBuilder invoiceStatement = new StringBuilder(invoiceHeader());
-
-    generateItemisedInvoice(invoiceStatement);
-    addFooterLines(totalInvoiceAmount(), frequentRenterPoints(), invoiceStatement);
-
-    return invoiceStatement.toString();
+  private List<ItemCharges> generateItemisedCharges() {
+    ArrayList<ItemCharges> itemCharges = new ArrayList<>();
+    _rentals.stream()
+        .map(rental -> new ItemCharges(rental.getMovie(), rental.charge()))
+        .forEach(itemCharges::add);
+    return itemCharges;
   }
 
   private int frequentRenterPoints() {
@@ -35,25 +34,7 @@ public class Customer {
     return _rentals.stream().mapToDouble(Rental::charge).sum();
   }
 
-  private void generateItemisedInvoice(StringBuilder invoiceStatement) {
-    Iterator<Rental> rentals = _rentals.stream().iterator();
-    while (rentals.hasNext()) {
-      Rental rental = rentals.next();
-      double rentalChargeForThisRental = rental.charge();
-      invoiceStatement.append(generateInvoiceLineForRental(rental, rentalChargeForThisRental));
-    }
-  }
-
-  private String invoiceHeader() {
-    return "Rental Record for " + getName() + "\n";
-  }
-
-  private void addFooterLines(double totalAmount, int frequentRenterPoints, StringBuilder result) {
-    result.append("You owed ").append(totalAmount).append("\n");
-    result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
-  }
-
-  private String generateInvoiceLineForRental(Rental rental, double rentalChargeForThisRental) {
-    return "\t" + rental.getMovie().getTitle() + "\t" + rentalChargeForThisRental + "\n";
+  public String getName() {
+    return _name;
   }
 }
