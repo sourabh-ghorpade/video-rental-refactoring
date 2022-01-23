@@ -11,7 +11,7 @@ public class TextInvoice implements InvoiceView {
     return invoiceStatement.toString();
   }
 
-  private String invoiceHeader(String name) {
+  public String invoiceHeader(String name) {
     return "Rental Record for " + name + "\n";
   }
 

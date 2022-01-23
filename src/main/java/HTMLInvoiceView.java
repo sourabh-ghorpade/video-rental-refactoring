@@ -8,12 +8,12 @@ public class HTMLInvoiceView implements InvoiceView {
     return invoiceStatement.toString();
   }
 
-  private void addFooterLines(double totalInvoiceAmount, int frequentRenterPoints, StringBuilder invoiceStatement) {
+  public void addFooterLines(double totalInvoiceAmount, int frequentRenterPoints, StringBuilder invoiceStatement) {
     invoiceStatement.append("<p>Amount owed is <em>" + totalInvoiceAmount + "</em></p>");
     invoiceStatement.append("<p>You earned <em>" + frequentRenterPoints + "</em> frequent renter points</p>");
   }
 
-  private String invoiceHeader(String customerName) {
+  public String invoiceHeader(String customerName) {
     return "<h1>Rental Record for <em>" + customerName + "</em></h1>";
   }
 }

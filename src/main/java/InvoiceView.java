@@ -6,6 +6,8 @@ public interface InvoiceView {
                   double totalInvoiceAmount,
                   int frequentRenterPoints);
 
+  String invoiceHeader(String customerName);
+
   static InvoiceView getInvoiceViewFor(String invoiceType) {
     return switch (invoiceType) {
       case "text" -> new TextInvoice();
