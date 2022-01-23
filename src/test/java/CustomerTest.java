@@ -25,4 +25,14 @@ public class CustomerTest {
       "You owed 19.0\n" +
       "You earned 7 frequent renter points", customer.statement());
   }
+
+  @Test
+  public void testNothingRented() {
+    Customer customer = new Customer("Bob");
+
+    assertEquals("""
+            Rental Record for Bob
+            You owed 0.0
+            You earned 0 frequent renter points""", customer.statement());
+  }
 }
