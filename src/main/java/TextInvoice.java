@@ -1,22 +1,11 @@
 import java.util.List;
 
-public class TextInvoice {
-  private final String customer;
-  private final List<ItemCharges> itemCharges;
-  private final double totalInvoiceAmount;
-  private final int frequentRenterPoints;
+public class TextInvoice implements InvoiceView {
 
-  public TextInvoice(String customerName, List<ItemCharges> itemCharges, double totalInvoiceAmount, int frequentRenterPoints) {
-    this.customer = customerName;
-    this.itemCharges = itemCharges;
-    this.totalInvoiceAmount = totalInvoiceAmount;
-    this.frequentRenterPoints = frequentRenterPoints;
-  }
-
-  public String generate() {
-    StringBuilder invoiceStatement = new StringBuilder(invoiceHeader(customer));
+  public String generate(String customerName, List<ItemCharges> itemCharges, double totalInvoiceAmount, int frequentRenterPoints) {
+    StringBuilder invoiceStatement = new StringBuilder(invoiceHeader(customerName));
     itemCharges.stream()
-        .map(itemCharges -> generateInvoiceLineForRental(itemCharges.getMovie(), itemCharges.getRentalChargeForThisRental()))
+        .map(itemCharge -> generateInvoiceLineForRental(itemCharge.getMovie(), itemCharge.getRentalChargeForThisRental()))
         .forEach(invoiceStatement::append);
     addFooterLines(totalInvoiceAmount, frequentRenterPoints, invoiceStatement);
     return invoiceStatement.toString();

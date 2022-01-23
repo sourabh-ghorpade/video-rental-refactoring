@@ -14,8 +14,12 @@ public class Customer {
   }
 
   public String statement() {
-    return new TextInvoice(getName(), generateItemisedCharges(), totalInvoiceAmount(), frequentRenterPoints())
-        .generate();
+    return statement("text");
+  }
+
+  public String statement(String invoiceType) {
+    return InvoiceView.getInvoiceViewFor(invoiceType)
+        .generate(getName(), generateItemisedCharges(), totalInvoiceAmount(), frequentRenterPoints());
   }
 
   private List<ItemCharges> generateItemisedCharges() {
