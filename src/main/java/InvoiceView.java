@@ -1,12 +1,9 @@
-import java.util.List;
-
 public interface InvoiceView {
-  String generate(String customerName,
-                  List<ItemCharges> itemCharges,
-                  double totalInvoiceAmount,
-                  int frequentRenterPoints);
+  String header(String customerName);
 
-  String invoiceHeader(String customerName);
+  void addFooterLines(double totalAmount, int frequentRenterPoints, StringBuilder result);
+
+  String generateInvoiceLineForRental(Movie movie, double rentalChargeForThisRental);
 
   static InvoiceView getInvoiceViewFor(String invoiceType) {
     return switch (invoiceType) {

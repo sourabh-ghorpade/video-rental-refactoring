@@ -1,17 +1,17 @@
 import java.util.List;
 
-public class InvoiceViewGenerator {
-  private final InvoiceView invoiceView;
-
-  public InvoiceViewGenerator(InvoiceView invoiceView) {
-    this.invoiceView = invoiceView;
-  }
+public record InvoiceViewGenerator(InvoiceView view) {
 
   public String generate(String customerName,
                          List<ItemCharges> itemCharges,
                          double totalInvoiceAmount,
                          int frequentRenterPoints) {
+    StringBuilder invoiceStatement = new StringBuilder(view.header(customerName));
+    itemCharges.stream()
+        .map(itemCharge -> view.generateInvoiceLineForRental(itemCharge.getMovie(), itemCharge.getRentalChargeForThisRental()))
+        .forEach(invoiceStatement::append);
 
-      return invoiceView.generate(customerName, itemCharges, totalInvoiceAmount, frequentRenterPoints);
-    }
+    view.addFooterLines(totalInvoiceAmount, frequentRenterPoints, invoiceStatement);
+    return invoiceStatement.toString();
+  }
 }
