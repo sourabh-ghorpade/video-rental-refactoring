@@ -17,33 +17,37 @@ public class Customer {
   }
 
   public String statement() {
-    double totalAmount = 0;
+    double totalInvoiceAmount = 0;
     int frequentRenterPoints = 0;
     Iterator<Rental> rentals = _rentals.stream().iterator();
-    StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
+    StringBuilder invoiceStatement = new StringBuilder(invoiceHeader());
 
     while (rentals.hasNext()) {
-
       Rental rental = rentals.next();
-
       double rentalChargeForThisRental = chargeForRental(rental);
-
       frequentRenterPoints += getFrequentRenterPoints(rental);
-
-      // show figures for this rental
-      result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(rentalChargeForThisRental).append("\n");
-      totalAmount += rentalChargeForThisRental;
+      invoiceStatement.append(generateInvoiceLineForRental(rental, rentalChargeForThisRental));
+      totalInvoiceAmount += rentalChargeForThisRental;
     }
 
-    // add footer lines
+    addFooterLines(totalInvoiceAmount, frequentRenterPoints, invoiceStatement);
+    return invoiceStatement.toString();
+  }
+
+  private String invoiceHeader() {
+    return "Rental Record for " + getName() + "\n";
+  }
+
+  private void addFooterLines(double totalAmount, int frequentRenterPoints, StringBuilder result) {
     result.append("You owed ").append(totalAmount).append("\n");
     result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
+  }
 
-    return result.toString();
+  private String generateInvoiceLineForRental(Rental rental, double rentalChargeForThisRental) {
+    return "\t" + rental.getMovie().getTitle() + "\t" + rentalChargeForThisRental + "\n";
   }
 
   private int getFrequentRenterPoints(Rental rental) {
-    // add frequent renter points
     int frequentRenterPoints = 1;
 
     // add bonus for a two day new release rental
