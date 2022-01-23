@@ -1,9 +1,9 @@
 public interface InvoiceView {
   String header(String customerName);
 
-  void addFooterLines(double totalAmount, int frequentRenterPoints, StringBuilder result);
+  String footer(double totalAmount, int frequentRenterPoints);
 
-  String generateInvoiceLineForRental(Movie movie, double rentalChargeForThisRental);
+  String lineItems(Movie movie, double rentalChargeForThisRental);
 
   static InvoiceView getInvoiceViewFor(String invoiceType) {
     return switch (invoiceType) {

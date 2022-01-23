@@ -1,12 +1,12 @@
-
 public class HTMLInvoiceView implements InvoiceView {
-  public void addFooterLines(double totalInvoiceAmount, int frequentRenterPoints, StringBuilder invoiceStatement) {
-    invoiceStatement.append("<p>Amount owed is <em>").append(totalInvoiceAmount).append("</em></p>");
-    invoiceStatement.append("<p>You earned <em>").append(frequentRenterPoints).append("</em> frequent renter points</p>");
+  public String footer(double totalInvoiceAmount, int frequentRenterPoints) {
+    return "<p>Amount owed is <em>" + totalInvoiceAmount + "</em></p>" +
+        "<p>You earned <em>" + frequentRenterPoints + "</em> frequent renter points</p>";
   }
 
+  // Requirement is that HTML Invoice doesnt require the full itemised bill.
   @Override
-  public String generateInvoiceLineForRental(Movie movie, double rentalChargeForThisRental) {
+  public String lineItems(Movie movie, double rentalChargeForThisRental) {
     return "";
   }
 

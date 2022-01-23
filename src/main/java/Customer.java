@@ -18,7 +18,7 @@ public class Customer {
   }
 
   public String statement(String invoiceType) {
-    return new InvoiceViewGenerator(InvoiceView.getInvoiceViewFor(invoiceType))
+    return new Invoice(InvoiceView.getInvoiceViewFor(invoiceType))
         .generate(getName(), generateItemisedCharges(), totalInvoiceAmount(), frequentRenterPoints());
   }
 
