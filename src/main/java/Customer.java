@@ -3,6 +3,12 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Customer {
+  public static final int REGULAR_MOVIE_BASE_RENTAL = 2;
+  public static final double CHILDRENS_MOVIE_BASE_CHARGE = 1.5;
+  public static final int NEW_RELEASE_FLAT_CHARGE = 3;
+  public static final int REGULAR_MOVIE_BASE_RENTAL_PERIOD_IN_DAYS = 2;
+  public static final int CHILDRENS_MOVIE_BASE_RENTAL_PERIOD_IN_DAYS = 3;
+  public static final double ADDITIONAL_CHARGE_PER_DAY = 1.5;
   private final String _name;
   private final List<Rental> _rentals = new ArrayList<>();
 
@@ -63,21 +69,21 @@ public class Customer {
     // determines the amount for each line
     switch (rental.getMovie().getPriceCode()) {
       case Movie.REGULAR -> {
-        rentalCharge += 2;
-        rentalCharge = getRentalCharge(rental.getDaysRented(), rentalCharge, 2);
+        rentalCharge += REGULAR_MOVIE_BASE_RENTAL;
+        rentalCharge = getRentalChargeForBeyondBasePeriod(rental.getDaysRented(), rentalCharge, REGULAR_MOVIE_BASE_RENTAL_PERIOD_IN_DAYS);
       }
-      case Movie.NEW_RELEASE -> rentalCharge += rental.getDaysRented() * 3;
+      case Movie.NEW_RELEASE -> rentalCharge += rental.getDaysRented() * NEW_RELEASE_FLAT_CHARGE;
       case Movie.CHILDRENS -> {
-        rentalCharge += 1.5;
-        rentalCharge = getRentalCharge(rental.getDaysRented(), rentalCharge, 3);
+        rentalCharge += CHILDRENS_MOVIE_BASE_CHARGE;
+        rentalCharge = getRentalChargeForBeyondBasePeriod(rental.getDaysRented(), rentalCharge, CHILDRENS_MOVIE_BASE_RENTAL_PERIOD_IN_DAYS);
       }
     }
     return rentalCharge;
   }
 
-  private double getRentalCharge(int daysRented, double rentalCharge, int baseRentalPeriodInDays) {
+  private double getRentalChargeForBeyondBasePeriod(int daysRented, double rentalCharge, int baseRentalPeriodInDays) {
     if (daysRented > baseRentalPeriodInDays)
-      rentalCharge += (daysRented - baseRentalPeriodInDays) * 1.5;
+      rentalCharge += (daysRented - baseRentalPeriodInDays) * ADDITIONAL_CHARGE_PER_DAY;
     return rentalCharge;
   }
 }
